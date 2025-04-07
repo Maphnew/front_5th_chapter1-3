@@ -36,5 +36,5 @@ export function deepEquals<T>(objA: T, objB: T): boolean {
 
 const isPrimitive = (obj: unknown) => obj !== Object(obj);
 const isObject = (obj: unknown) => {
-  return typeof obj === 'object' && obj !== null && obj.constructor === Object;
-}
+  return typeof obj === "object" && obj !== null && obj.constructor === Object;
+};
