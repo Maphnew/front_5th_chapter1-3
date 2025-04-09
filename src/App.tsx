@@ -1,30 +1,16 @@
-import React, { useState, createContext, useContext } from "react";
+import React, {
+  useState,
+  createContext,
+  useContext,
+  useMemo,
+  useCallback,
+} from "react";
 import { generateItems, renderLog } from "./utils";
-
-// 타입 정의
-interface Item {
-  id: number;
-  name: string;
-  category: string;
-  price: number;
-}
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
-interface Notification {
-  id: number;
-  message: string;
-  type: "info" | "success" | "warning" | "error";
-}
+import { Item, User, Notification, Theme } from "./types";
+import { useTheme, ThemeContext } from "./hooks";
 
 // AppContext 타입 정의
 interface AppContextType {
-  theme: string;
-  toggleTheme: () => void;
   user: User | null;
   login: (email: string, password: string) => void;
   logout: () => void;
@@ -43,11 +29,16 @@ const useAppContext = () => {
   }
   return context;
 };
+interface ThemeContextType {
+  theme: Theme;
+  toggleTheme: () => void;
+}
 
 // Header 컴포넌트
 export const Header: React.FC = () => {
   renderLog("Header rendered");
-  const { theme, toggleTheme, user, login, logout } = useAppContext();
+  const { user, login, logout } = useAppContext();
+  const { theme, toggleTheme } = useTheme();
 
   const handleLogin = () => {
     // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
@@ -96,7 +87,7 @@ export const ItemList: React.FC<{
 }> = ({ items, onAddItemsClick }) => {
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
-  const { theme } = useAppContext();
+  const { theme } = useTheme();
 
   const filteredItems = items.filter(
     (item) =>
@@ -268,14 +259,14 @@ export const NotificationSystem: React.FC = () => {
 
 // 메인 App 컴포넌트
 const App: React.FC = () => {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState<Theme>("light");
   const [items, setItems] = useState(generateItems(1000));
   const [user, setUser] = useState<User | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  };
+  }, []);
 
   const addItems = () => {
     setItems((prevItems) => [
@@ -310,8 +301,6 @@ const App: React.FC = () => {
   };
 
   const contextValue: AppContextType = {
-    theme,
-    toggleTheme,
     user,
     login,
     logout,
@@ -320,25 +309,35 @@ const App: React.FC = () => {
     removeNotification,
   };
 
+  const themeContextValue: ThemeContextType = useMemo(
+    () => ({
+      theme,
+      toggleTheme,
+    }),
+    [theme, toggleTheme],
+  );
+
   return (
-    <AppContext.Provider value={contextValue}>
-      <div
-        className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
-      >
-        <Header />
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col md:flex-row">
-            <div className="w-full md:w-1/2 md:pr-4">
-              <ItemList items={items} onAddItemsClick={addItems} />
-            </div>
-            <div className="w-full md:w-1/2 md:pl-4">
-              <ComplexForm />
+    <ThemeContext.Provider value={themeContextValue}>
+      <AppContext.Provider value={contextValue}>
+        <div
+          className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
+        >
+          <Header />
+          <div className="container mx-auto px-4 py-8">
+            <div className="flex flex-col md:flex-row">
+              <div className="w-full md:w-1/2 md:pr-4">
+                <ItemList items={items} onAddItemsClick={addItems} />
+              </div>
+              <div className="w-full md:w-1/2 md:pl-4">
+                <ComplexForm />
+              </div>
             </div>
           </div>
+          <NotificationSystem />
         </div>
-        <NotificationSystem />
-      </div>
-    </AppContext.Provider>
+      </AppContext.Provider>
+    </ThemeContext.Provider>
   );
 };
 
