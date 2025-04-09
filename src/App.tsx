@@ -2,12 +2,11 @@ import React, {
   useState,
   createContext,
   useContext,
-  useMemo,
-  useCallback,
 } from "react";
 import { generateItems, renderLog } from "./utils";
-import { Item, User, Notification, Theme } from "./types";
-import { useTheme, ThemeContext } from "./hooks";
+import { Item, User, Notification } from "./types";
+import { useTheme } from "./hooks";
+import ThemeProvider from "./providers/ThemeProvider";
 
 // AppContext 타입 정의
 interface AppContextType {
@@ -29,10 +28,6 @@ const useAppContext = () => {
   }
   return context;
 };
-interface ThemeContextType {
-  theme: Theme;
-  toggleTheme: () => void;
-}
 
 // Header 컴포넌트
 export const Header: React.FC = () => {
@@ -259,14 +254,9 @@ export const NotificationSystem: React.FC = () => {
 
 // 메인 App 컴포넌트
 const App: React.FC = () => {
-  const [theme, setTheme] = useState<Theme>("light");
   const [items, setItems] = useState(generateItems(1000));
   const [user, setUser] = useState<User | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>([]);
-
-  const toggleTheme = useCallback(() => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  }, []);
 
   const addItems = () => {
     setItems((prevItems) => [
@@ -309,20 +299,9 @@ const App: React.FC = () => {
     removeNotification,
   };
 
-  const themeContextValue: ThemeContextType = useMemo(
-    () => ({
-      theme,
-      toggleTheme,
-    }),
-    [theme, toggleTheme],
-  );
-
   return (
-    <ThemeContext.Provider value={themeContextValue}>
       <AppContext.Provider value={contextValue}>
-        <div
-          className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
-        >
+        <ThemeProvider>
           <Header />
           <div className="container mx-auto px-4 py-8">
             <div className="flex flex-col md:flex-row">
@@ -335,9 +314,8 @@ const App: React.FC = () => {
             </div>
           </div>
           <NotificationSystem />
-        </div>
+        </ThemeProvider>
       </AppContext.Provider>
-    </ThemeContext.Provider>
   );
 };
 

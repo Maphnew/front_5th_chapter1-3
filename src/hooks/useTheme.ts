@@ -1,14 +1,5 @@
-import { Theme } from "../types";
-import { createContext, useContext } from "react";
-
-interface ThemeContextType {
-  theme: Theme;
-  toggleTheme: () => void;
-}
-
-export const ThemeContext = createContext<ThemeContextType | undefined>(
-  undefined,
-);
+import { useContext } from "react";
+import {ThemeContext} from "../context";
 
 export const useTheme = () => {
   const context = useContext(ThemeContext);
