@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { generateItems, renderLog } from "./utils";
 import { Item } from "./types";
 import { useTheme, useAuth, useNotification } from "./hooks";
-import {ThemeProvider, AuthProvider, NotificationProvider} from "./providers";
-
+import { ThemeProvider, AuthProvider, NotificationProvider } from "./providers";
 
 // Header 컴포넌트
 export const Header: React.FC = () => {
@@ -240,24 +239,24 @@ const App: React.FC = () => {
   };
 
   return (
-      <ThemeProvider>
-        <NotificationProvider>
-         <AuthProvider>
-            <Header />
-            <div className="container mx-auto px-4 py-8">
-              <div className="flex flex-col md:flex-row">
-                <div className="w-full md:w-1/2 md:pr-4">
-                  <ItemList items={items} onAddItemsClick={addItems} />
-                </div>
-                <div className="w-full md:w-1/2 md:pl-4">
-                  <ComplexForm />
-                </div>
+    <ThemeProvider>
+      <NotificationProvider>
+        <AuthProvider>
+          <Header />
+          <div className="container mx-auto px-4 py-8">
+            <div className="flex flex-col md:flex-row">
+              <div className="w-full md:w-1/2 md:pr-4">
+                <ItemList items={items} onAddItemsClick={addItems} />
+              </div>
+              <div className="w-full md:w-1/2 md:pl-4">
+                <ComplexForm />
               </div>
             </div>
-            <NotificationSystem />
-         </AuthProvider>
-        </NotificationProvider>
-      </ThemeProvider>
+          </div>
+          <NotificationSystem />
+        </AuthProvider>
+      </NotificationProvider>
+    </ThemeProvider>
   );
 };
 
