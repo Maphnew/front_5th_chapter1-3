@@ -1,4 +1,4 @@
 export * from "./ItemType";
-export * from "./AuthType";
+export * from "./UserType";
 export * from "./NotificationType";
 export * from "./ThemeType";
