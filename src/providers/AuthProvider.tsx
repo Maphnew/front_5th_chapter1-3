@@ -1,5 +1,6 @@
 import React, { useState, PropsWithChildren } from "react";
-import { User, Auth } from "../types";
+import { User } from "../types";
+import { Auth } from '../context/AuthContext'
 import { useMemo, useCallback } from "../@lib";
 import { AuthContext } from "../context";
 import { useNotification } from "../hooks/useNotification";
