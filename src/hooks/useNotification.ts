@@ -1,12 +1,4 @@
-import { useContext } from "react";
 import { NotificationContext } from "../context";
+import { customHookMaker } from "./customHookMaker";
 
-export const useNotification = () => {
-  const context = useContext(NotificationContext);
-  if (context === undefined) {
-    throw new Error(
-      "useNotification must be userd within an NotificationProvider",
-    );
-  }
-  return context;
-};
+export const useNotification = customHookMaker(NotificationContext)

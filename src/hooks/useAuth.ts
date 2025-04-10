@@ -1,10 +1,4 @@
-import { useContext } from "react";
 import { AuthContext } from "../context";
+import { customHookMaker } from "./customHookMaker";
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useUserContext must be userd within an UserProvider");
-  }
-  return context;
-};
+export const useAuth = customHookMaker(AuthContext)
