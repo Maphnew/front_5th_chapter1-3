@@ -1,8 +1,9 @@
 import { renderLog } from "../utils";
 import { useAuth, useTheme } from "../hooks";
+import { memo } from "../@lib";
 
 // Header 컴포넌트
-export const Header: React.FC = () => {
+export const Header: React.FC = memo(() => {
   renderLog("Header rendered");
   const { user, login, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
@@ -45,4 +46,4 @@ export const Header: React.FC = () => {
       </div>
     </header>
   );
-};
+});

@@ -1,16 +1,15 @@
-import { Item } from "../types";
 import { renderLog } from "../utils";
 import { useState } from "react";
-import { useTheme } from "../hooks";
+import { useTheme, useItems } from "../hooks";
+import { useMemo, memo } from "../@lib";
 
 // ItemList 컴포넌트
-export const ItemList: React.FC<{
-  items: Item[];
-  onAddItemsClick: () => void;
-}> = ({ items, onAddItemsClick }) => {
+export const ItemList: React.FC = memo(() => {
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
+
   const { theme } = useTheme();
+  const { items, addItems } = useItems()
 
   const filteredItems = items.filter(
     (item) =>
@@ -18,9 +17,9 @@ export const ItemList: React.FC<{
       item.category.toLowerCase().includes(filter.toLowerCase()),
   );
 
-  const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
+  const totalPrice = useMemo(() => filteredItems.reduce((sum, item) => sum + item.price, 0), [filteredItems])
 
-  const averagePrice = Math.round(totalPrice / filteredItems.length) || 0;
+  const averagePrice = useMemo(() => Math.round(totalPrice / filteredItems.length) || 0, [totalPrice]);
 
   return (
     <div className="mt-8">
@@ -30,7 +29,7 @@ export const ItemList: React.FC<{
           <button
             type="button"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs"
-            onClick={onAddItemsClick}
+            onClick={addItems}
           >
             대량추가
           </button>
@@ -60,4 +59,4 @@ export const ItemList: React.FC<{
       </ul>
     </div>
   );
-};
+});
