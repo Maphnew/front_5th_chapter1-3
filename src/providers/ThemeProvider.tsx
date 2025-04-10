@@ -1,7 +1,7 @@
 import React, { useState, PropsWithChildren } from "react";
-import { Theme, ThemeContextType } from "../types";
+import { Theme } from "../types";
 import { useMemo, useCallback } from "../@lib";
-import { ThemeContext } from "../context";
+import { ThemeContext, ThemeContextType } from "../context";
 
 export const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>("light");
