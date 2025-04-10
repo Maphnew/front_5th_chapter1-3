@@ -9,7 +9,7 @@ export const ItemList: React.FC = memo(() => {
   const [filter, setFilter] = useState("");
 
   const { theme } = useTheme();
-  const { items, addItems } = useItems()
+  const { items, addItems } = useItems();
 
   const filteredItems = items.filter(
     (item) =>
@@ -17,9 +17,15 @@ export const ItemList: React.FC = memo(() => {
       item.category.toLowerCase().includes(filter.toLowerCase()),
   );
 
-  const totalPrice = useMemo(() => filteredItems.reduce((sum, item) => sum + item.price, 0), [filteredItems])
+  const totalPrice = useMemo(
+    () => filteredItems.reduce((sum, item) => sum + item.price, 0),
+    [filteredItems],
+  );
 
-  const averagePrice = useMemo(() => Math.round(totalPrice / filteredItems.length) || 0, [totalPrice]);
+  const averagePrice = useMemo(
+    () => Math.round(totalPrice / filteredItems.length) || 0,
+    [totalPrice],
+  );
 
   return (
     <div className="mt-8">

@@ -1,5 +1,10 @@
 import React from "react";
-import { ThemeProvider, AuthProvider, NotificationProvider, ItemProvider } from "./providers";
+import {
+  ThemeProvider,
+  AuthProvider,
+  NotificationProvider,
+  ItemProvider,
+} from "./providers";
 import MainPage from "./MainPage";
 
 // 메인 App 컴포넌트

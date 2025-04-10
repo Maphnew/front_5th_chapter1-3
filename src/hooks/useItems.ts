@@ -1,4 +1,4 @@
 import { ItemContext } from "../context";
 import { customHookMaker } from "./customHookMaker";
 
-export const useItems = customHookMaker(ItemContext)
+export const useItems = customHookMaker(ItemContext);

@@ -16,7 +16,7 @@ export function memo<P extends object>(
     if (prevProps.current && _equals(prevProps.current, props)) {
       return prevComponent.current;
     }
-    
+
     // 4. props가 변경된 경우에만 새로운 렌더링 수행
     const newElement = createElement(Component, props);
     prevProps.current = props;

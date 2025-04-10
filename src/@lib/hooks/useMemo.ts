@@ -17,7 +17,7 @@ export function useMemo<T>(
     prevResult.current = factory();
     prevDeps.current = _deps;
   }
-  
+
   // 4. 메모이제이션된 값 반환
   return prevResult.current as T;
 }
